@@ -5,14 +5,22 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = current_user.posts
+    if (current_user.admin)
+      @posts = Post.all
+    else
+      @posts = current_user.posts
+    end
+
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
-    if (@post.user.id != current_user.id)
-      redirect_to posts_path
+    if (current_user.admin)
+    else
+      if (@post.user.id != current_user.id)
+        redirect_to posts_path
+      end
     end
   end
 
@@ -23,8 +31,11 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    if (@post.user.id != current_user.id)
-      redirect_to posts_path
+    if (current_user.admin)
+    else
+      if (@post.user.id != current_user.id)
+        redirect_to posts_path
+      end
     end
   end
 
